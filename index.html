@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"
+    ></script>
+    <title>AR Playground</title>
+  </head>
+  <body>
+    <model-viewer
+      ar
+      ar-placement="floor"
+      autoplay
+      auto-rotate
+      exposure="1"
+      camera-controls"
+      src="assets/charizard.glb"
+      shadow-intensity="1" 
+      touch-action="pan-y"
+      ar-modes="webxr scene-viewer" 
+    >
+      <button slot="ar-button" id="ar-button">View in your space</button>
+      <div id="ar-prompt">
+        <img src="assets/charizard.glb" />
+      </div>
+
+      <button id="ar-failure">AR is not tracking!</button>
+    </model-viewer>
+    <div class="slider">
+        <div class="slides">
+          <button
+            class="slide selected"
+            onclick="switchSrc(this, 'charizard')"
+            style="
+              background-image: url('assets/charizard.avif');
+            "
+          ></button>
+          <button
+            class="slide selected"
+            onclick="switchSrc(this, 'beedrill')"
+            style="
+              background-image: url('assets/beedrill.avif');
+            "
+          ></button>
+          <button
+            class="slide selected"
+            onclick="switchSrc(this, 'koffing')"
+            style="
+              background-image: url('assets/koffing.avif');
+            "
+          ></button>
+        </div>
+      </div>
+
+    <script type="module">
+      const modelViewer = document.querySelector('model-viewer');
+
+      window.switchSrc = (element, name) => {
+        console.log('switching to', name);
+        const base = './assets/' + name;
+        modelViewer.src = base + '.glb';
+        modelViewer.poster = base + '.avif';
+        const slides = document.querySelectorAll('.slide');
+        slides.forEach((element) => {
+          element.classList.remove('selected');
+        });
+        element.classList.add('selected');
+      };
+
+      document
+        .querySelector('.slider')
+        .addEventListener('beforexrselect', (ev) => {
+          ev.preventDefault();
+        });
+    </script>
+  </body>
+</html>
